@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HamstersarusOS</title>
+
+  <!-- Fonts: pixel display + retro terminal + clean mono. No build step. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- Part 1: Welcome screen -->
+  <section id="welcome" class="welcome">
+    <div class="welcome-stack">
+      <h1 class="logo">HAMSTERSARUS<span class="logo-os">OS</span></h1>
+
+      <!-- a little "neofetch" style intro window, like a Linux rice -->
+      <div class="window window--terminal">
+        <div class="title-bar">
+          <span class="title-bar-dots"><i></i><i></i><i></i></span>
+          <span class="title-bar-text">~/welcome</span>
+        </div>
+        <div class="window-body fetch">
+          <div class="fetch-mascot">🐹</div>
+          <ul class="fetch-info">
+            <li><span class="k">user</span> hamstersarus</li>
+            <li><span class="k">os</span>   HamstersarusOS</li>
+            <li><span class="k">wm</span>   draggable windows</li>
+            <li><span class="k">apps</span> explore to find out :)</li>
+          </ul>
+        </div>
+      </div>
+
+      <button id="enter-btn" class="enter-btn">▸ enter</button>
+    </div>
+  </section>
+
+  <!-- Part 2+: The desktop (hidden until "Enter") -->
+  <main id="desktop" class="desktop hidden">
+    <header class="top-bar">
+      <span class="top-bar-brand">🐹 hamstersarus</span>
+      <span id="clock" class="clock">--:--:--</span>
+    </header>
+
+    <!-- Desktop icons. Part 3 will make these open windows. -->
+    <ul class="icons">
+      <li class="icon" data-app="about"><span class="icon-glyph">🐹</span><span class="icon-label">about me</span></li>
+      <li class="icon" data-app="notes"><span class="icon-glyph">📝</span><span class="icon-label">notes</span></li>
+      <li class="icon" data-app="music"><span class="icon-glyph">🎵</span><span class="icon-label">music</span></li>
+      <li class="icon" data-app="gallery"><span class="icon-glyph">🖼️</span><span class="icon-label">gallery</span></li>
+      <li class="icon" data-app="trash"><span class="icon-glyph">🗑️</span><span class="icon-label">trash</span></li>
+    </ul>
+
+    <!-- windows get appended here -->
+  </main>
+
+  <script src="js/os.js"></script>
+</body>
+</html>

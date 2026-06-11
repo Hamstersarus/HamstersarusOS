@@ -1,0 +1,227 @@
+/* ============================================================
+   HamstersarusOS — design tokens
+   Aesthetic: lavender "Tokyo Night" desktop rice + Y2K scrapbook.
+   Graph-paper wallpaper is pure CSS (no image needed).
+   ============================================================ */
+
+:root {
+  /* wallpaper (light lavender graph paper) */
+  --wall:       #bcb8e0;
+  --wall-2:     #a9a6d6;
+  --grid-line:  rgba(40, 30, 70, 0.10);
+  --grid-size:  34px;
+
+  /* windows (dark Tokyo Night) */
+  --win-bg:     #1a1b26;
+  --win-bg-2:   #24283b;
+  --win-border: #bb9af7;
+  --ink:        #c0caf5;
+  --muted:      #565f89;
+
+  /* neon accents */
+  --purple: #bb9af7;
+  --blue:   #7aa2f7;
+  --cyan:   #7dcfff;
+  --green:  #9ece6a;
+  --orange: #ff9e64;
+  --pink:   #f7768e;
+  --accent: var(--purple);
+
+  /* fonts */
+  --font-display:  "Press Start 2P", monospace;
+  --font-terminal: "VT323", monospace;
+  --font-mono:     "JetBrains Mono", ui-monospace, monospace;
+
+  --top-bar-h: 34px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-mono);
+  color: var(--ink);
+  height: 100vh;
+  overflow: hidden;
+}
+
+.hidden { display: none !important; }
+
+/* --- shared: graph-paper wallpaper --- */
+.welcome,
+.desktop {
+  height: 100vh;
+  background-color: var(--wall);
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: var(--grid-size) var(--grid-size);
+}
+
+/* ============================================================
+   Window chrome (reused by welcome card + every future app)
+   ============================================================ */
+.window {
+  background: var(--win-bg);
+  border: 1.5px solid var(--win-border);
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4),
+              0 8px 30px rgba(20, 10, 40, 0.45),
+              0 0 18px rgba(187, 154, 247, 0.25);   /* faint neon glow */
+  overflow: hidden;
+}
+
+.title-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0.7rem;
+  background: var(--win-bg-2);
+  border-bottom: 1px solid rgba(187, 154, 247, 0.35);
+  font-size: 0.8rem;
+  color: var(--muted);
+  user-select: none;
+}
+
+.title-bar-dots { display: flex; gap: 5px; }
+.title-bar-dots i {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--muted); display: block;
+}
+.title-bar-dots i:nth-child(1) { background: var(--pink); }
+.title-bar-dots i:nth-child(2) { background: var(--orange); }
+.title-bar-dots i:nth-child(3) { background: var(--green); }
+
+.title-bar-text { letter-spacing: 0.5px; }
+
+.window-body { padding: 1rem; }
+
+/* ============================================================
+   Welcome screen
+   ============================================================ */
+.welcome { display: grid; place-items: center; }
+
+.welcome-stack {
+  display: grid;
+  gap: 1.4rem;
+  justify-items: center;
+  text-align: center;
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 4vw, 2.4rem);
+  line-height: 1.4;
+  color: var(--win-bg);
+  text-shadow: 3px 3px 0 var(--purple), 6px 6px 0 rgba(26, 27, 38, 0.25);
+}
+.logo-os { color: var(--pink); }
+
+/* neofetch-style intro */
+.fetch {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  font-family: var(--font-terminal);
+  font-size: 1.3rem;
+  text-align: left;
+}
+.fetch-mascot {
+  font-size: 3.2rem;
+  filter: drop-shadow(0 0 8px rgba(187, 154, 247, 0.6));
+}
+.fetch-info { list-style: none; line-height: 1.5; }
+.fetch-info .k {
+  display: inline-block;
+  width: 4.5ch;
+  color: var(--cyan);
+}
+
+.enter-btn {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 0.55rem 1.6rem;
+  color: var(--win-bg);
+  background: var(--purple);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 0 14px rgba(187, 154, 247, 0.55);
+  transition: transform 0.08s ease, filter 0.15s ease;
+}
+.enter-btn:hover { filter: brightness(1.08); }
+.enter-btn:active { transform: translateY(1px); }
+
+/* ============================================================
+   Desktop + top bar
+   ============================================================ */
+.desktop { position: relative; }
+
+.top-bar {
+  height: var(--top-bar-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  background: rgba(26, 27, 38, 0.82);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(187, 154, 247, 0.4);
+  color: var(--ink);
+  font-size: 0.85rem;
+}
+
+.top-bar-brand { font-weight: 700; }
+
+.clock {
+  font-family: var(--font-terminal);
+  font-size: 1.25rem;
+  color: var(--cyan);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Desktop icons --- */
+.icons {
+  list-style: none;
+  position: absolute;
+  top: calc(var(--top-bar-h) + 1rem);
+  left: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.icon {
+  width: 80px;
+  padding: 0.5rem 0.3rem;
+  display: grid;
+  justify-items: center;
+  gap: 0.35rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  user-select: none;
+  text-align: center;
+}
+
+.icon:hover {
+  background: rgba(26, 27, 38, 0.30);
+  border-color: rgba(187, 154, 247, 0.45);
+}
+
+.icon.selected {
+  background: rgba(26, 27, 38, 0.45);
+  border-color: var(--purple);
+  box-shadow: 0 0 12px rgba(187, 154, 247, 0.4);
+}
+
+.icon-glyph {
+  font-size: 2rem;
+  filter: drop-shadow(0 1px 2px rgba(20, 10, 40, 0.4));
+}
+
+.icon-label {
+  font-family: var(--font-terminal);
+  font-size: 1.05rem;
+  color: var(--win-bg);
+  line-height: 1;
+}
