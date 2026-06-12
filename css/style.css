@@ -91,9 +91,31 @@ body {
 .title-bar-dots i:nth-child(2) { background: var(--orange); }
 .title-bar-dots i:nth-child(3) { background: var(--green); }
 
+.title-bar { user-select: none; }
 .title-bar-text { letter-spacing: 0.5px; }
 
+.title-bar-close {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0 0.2rem;
+  cursor: pointer;
+}
+.title-bar-close:hover { color: var(--pink); }
+
 .window-body { padding: 1rem; }
+
+/* Floating desktop windows (created by js/windows.js) */
+.window--floating {
+  position: absolute;
+  min-width: 240px;
+  max-width: 360px;
+}
+.window--floating .title-bar { cursor: grab; }
+.window--floating .title-bar:active { cursor: grabbing; }
 
 /* ============================================================
    Welcome screen
@@ -225,3 +247,38 @@ body {
   color: var(--win-bg);
   line-height: 1;
 }
+
+/* ============================================================
+   Placeholder app content (real apps arrive in Parts 4-5)
+   ============================================================ */
+.app-about { display: grid; gap: 0.5rem; max-width: 260px; text-align: center; }
+.app-about-avatar { font-size: 2.6rem; }
+.app-about h2 { font-size: 1rem; color: var(--purple); }
+.app-about p { font-size: 0.85rem; line-height: 1.5; }
+
+.app-notes {
+  width: 250px;
+  height: 150px;
+  resize: none;
+  padding: 0.6rem;
+  background: var(--win-bg-2);
+  color: var(--ink);
+  border: 1px solid rgba(187, 154, 247, 0.35);
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+.app-notes:focus { outline: 1px solid var(--purple); }
+
+.app-music { display: grid; gap: 0.5rem; text-align: center; }
+.app-music-art { font-size: 3rem; }
+.app-music-track {
+  font-family: var(--font-terminal);
+  font-size: 1.2rem;
+  color: var(--cyan);
+}
+.app-music-controls { font-size: 1.2rem; letter-spacing: 0.4rem; }
+
+.app-gallery { font-size: 2rem; letter-spacing: 0.4rem; line-height: 1.6; max-width: 220px; }
+
+.app-trash { font-family: var(--font-terminal); font-size: 1.2rem; }

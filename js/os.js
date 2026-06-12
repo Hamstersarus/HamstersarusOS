@@ -31,10 +31,9 @@ icons.forEach((icon) => {
     icon.classList.add("selected");
   });
 
-  // double click will open the app's window once Part 3 exists
+  // double click opens the app's window (defined in js/windows.js)
   icon.addEventListener("dblclick", () => {
-    const app = icon.dataset.app;
-    console.log(`open app: ${app}`); // TODO Part 3: createWindow(...)
+    openApp(icon.dataset.app);
   });
 });
 
