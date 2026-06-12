@@ -1,17 +1,74 @@
 // HamstersarusOS — music player (advanced app).
-// Plays real audio files from assets/music/.
+// `musicPlayer` is ONE shared player that keeps playing even when its window
+// is closed. The window built by buildMusicPlayer() is just a UI bound to it,
+// so reopening the app always reflects the real play state (no double-play).
 //
 // TO ADD YOUR MUSIC:
-//   1. drop .mp3 files into the assets/music/ folder
-//   2. list them in the `playlist` array below (title + matching filename)
+//   1. drop .mp3 files into assets/music/
+//   2. add a line to the `playlist` below: title + matching filename
 
-function buildMusicPlayer() {
+const musicPlayer = (function () {
   const playlist = [
-    { title: "track one", src: "assets/music/track1.mp3" },
-    { title: "track two", src: "assets/music/track2.mp3" },
+    { title: "soft focus — lofi", src: "assets/music/pocketbeats-soft-focus-aesthetic-lofi-music-background-492869.mp3" },
+    { title: "aesthetic lo-fi beat", src: "assets/music/tunetank-aesthetic-lo-fi-beat-348346.mp3" },
   ];
-  let index = 0;
 
+  const audio = new Audio();
+  let index = 0;
+  let errored = false;
+  let render = null; // the open window's UI updater, if a window is open
+
+  function update() {
+    if (render) render();
+  }
+
+  function load(i, autoplay) {
+    index = (i + playlist.length) % playlist.length;
+    errored = false;
+    audio.src = playlist[index].src;
+    if (autoplay) audio.play().catch(() => {});
+    update();
+  }
+
+  audio.addEventListener("play", update);
+  audio.addEventListener("pause", update);
+  audio.addEventListener("ended", () => load(index + 1, true));
+  audio.addEventListener("error", () => {
+    errored = true;
+    update();
+  });
+
+  load(0, false); // preload the first track but don't play until asked
+
+  return {
+    playlist,
+    get isPlaying() {
+      return !audio.paused && !errored;
+    },
+    get currentTitle() {
+      return errored ? "drop songs in assets/music/" : playlist[index].title;
+    },
+    play() {
+      audio.play().catch(() => {});
+    },
+    toggle() {
+      if (audio.paused) this.play();
+      else audio.pause();
+    },
+    next() {
+      load(index + 1, true);
+    },
+    prev() {
+      load(index - 1, true);
+    },
+    setRender(fn) {
+      render = fn;
+    },
+  };
+})();
+
+// The window UI — controls and mirrors the shared musicPlayer above.
+function buildMusicPlayer() {
   const root = document.createElement("div");
   root.className = "app-music";
   root.innerHTML =
@@ -23,47 +80,21 @@ function buildMusicPlayer() {
       '<button data-act="next" title="next">⏭</button>' +
     "</div>";
 
-  const audio = new Audio();
   const trackEl = root.querySelector(".app-music-track");
   const playBtn = root.querySelector('[data-act="play"]');
   const art = root.querySelector(".app-music-art");
 
-  function load(i) {
-    index = (i + playlist.length) % playlist.length;
-    audio.src = playlist[index].src;
-    trackEl.textContent = playlist[index].title;
+  function render() {
+    trackEl.textContent = musicPlayer.currentTitle;
+    playBtn.textContent = musicPlayer.isPlaying ? "⏸" : "▶";
+    art.classList.toggle("spin", musicPlayer.isPlaying);
   }
 
-  playBtn.addEventListener("click", () => {
-    if (audio.paused) audio.play();
-    else audio.pause();
-  });
-  root.querySelector('[data-act="next"]').addEventListener("click", () => {
-    load(index + 1);
-    audio.play();
-  });
-  root.querySelector('[data-act="prev"]').addEventListener("click", () => {
-    load(index - 1);
-    audio.play();
-  });
+  playBtn.addEventListener("click", () => musicPlayer.toggle());
+  root.querySelector('[data-act="next"]').addEventListener("click", () => musicPlayer.next());
+  root.querySelector('[data-act="prev"]').addEventListener("click", () => musicPlayer.prev());
 
-  audio.addEventListener("play", () => {
-    playBtn.textContent = "⏸";
-    art.classList.add("spin");
-  });
-  audio.addEventListener("pause", () => {
-    playBtn.textContent = "▶";
-    art.classList.remove("spin");
-  });
-  audio.addEventListener("ended", () => {
-    load(index + 1);
-    audio.play();
-  });
-  audio.addEventListener("error", () => {
-    trackEl.textContent = "drop songs in assets/music/";
-    art.classList.remove("spin");
-  });
-
-  load(0);
+  musicPlayer.setRender(render); // this window now reflects player state
+  render(); // show the current state right away
   return root;
 }

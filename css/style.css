@@ -209,6 +209,25 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+/* --- Desktop toast / notification --- */
+.toast {
+  position: absolute;
+  top: calc(var(--top-bar-h) + 12px);
+  right: 12px;
+  padding: 0.6rem 0.9rem;
+  background: var(--win-bg);
+  border: 1px solid var(--win-border);
+  border-radius: 8px;
+  color: var(--ink);
+  font-size: 0.85rem;
+  box-shadow: 0 6px 20px rgba(20, 10, 40, 0.4), 0 0 14px rgba(187, 154, 247, 0.25);
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  z-index: 9999;
+}
+.toast.show { opacity: 1; transform: translateX(0); }
+
 /* --- Desktop icons --- */
 .icons {
   list-style: none;

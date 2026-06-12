@@ -1,0 +1,65 @@
+# 🐹 HamstersarusOS
+
+A personal website built as a tiny **web operating system**. Instead of a plain "about me" page, you land on a desktop and get to know me by clicking around — opening windows, playing games, and poking through apps.
+
+### ▸ [Open the live site](https://hamstersarus.github.io/Hamstersarus_Website/)
+
+Built for **Hack Club Stardance**, following the [webOS jam](https://jams.hackclub.com/batch/webOS).
+
+---
+
+## ✨ Features
+
+- **Welcome screen** — a pixel logo and a fake "neofetch" terminal that boots you into the desktop.
+- **Desktop & top bar** — graph-paper wallpaper, a live clock, and clickable app icons.
+- **Draggable windows** — open windows, drag them by the title bar, click to bring one to the front, and close them with the ×.
+- **About Me** — who I am, plus my likes and dislikes.
+- **Music player 🎵** — lofi tracks start playing the moment you enter, with a "now playing" notification. Play / pause / skip from the app, and it keeps playing even after you close its window.
+- **2048 🎮** — a fully playable, purple-themed version of the game.
+- **Notes, Gallery, Trash** — small extra apps to explore.
+
+## 🎮 Controls
+
+- **Double-click** a desktop icon to open its app.
+- **Drag** a window by its title bar to move it; **click** it to bring it forward; **×** to close.
+- In **2048**, use the **arrow keys** or **WASD** to slide the tiles. Combine matching numbers to reach 2048!
+
+## 🎨 The look
+
+A dreamy **lavender "Tokyo Night"** desktop crossed with a **Y2K Windows scrapbook** vibe — soft purple graph paper, dark windows with neon-purple borders, and pixel + retro-terminal fonts. The wallpaper grid is pure CSS (no image!).
+
+## 🛠️ Built with
+
+Plain **HTML, CSS, and JavaScript** — no frameworks, no build tools. It runs by simply opening the page.
+
+```
+Hamstersarus_Website/
+├── index.html        # the whole OS
+├── css/style.css     # all styling + the design system
+├── js/
+│   ├── os.js         # boot, desktop, clock, icons
+│   ├── windows.js    # the draggable-window system + app registry
+│   └── apps/
+│       ├── game2048.js
+│       └── music.js
+└── assets/music/     # drop your songs here
+```
+
+## ▶️ Run it locally
+
+No install needed. Either open `index.html` in a browser, or (recommended) serve it:
+
+```bash
+python3 -m http.server 8000
+```
+
+Then visit **http://localhost:8000**. Using a local server avoids browser caching issues while editing.
+
+## 🎵 Adding your own music
+
+1. Put `.mp3` files in `assets/music/`.
+2. List them in the `playlist` array in `js/apps/music.js`.
+
+---
+
+Made with 🐹 by Hamstersarus.

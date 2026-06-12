@@ -9,7 +9,24 @@ const enterBtn = document.getElementById("enter-btn");
 enterBtn.addEventListener("click", () => {
   welcome.classList.add("hidden");
   desktop.classList.remove("hidden");
+  // start the music right away (this click is the user gesture browsers
+  // require to allow audio), and announce it with a toast
+  musicPlayer.play();
+  showNotification("🎵 now playing: " + musicPlayer.currentTitle);
 });
+
+// Small desktop toast that slides in, then fades out.
+function showNotification(text) {
+  const toast = document.createElement("div");
+  toast.className = "toast";
+  toast.textContent = text;
+  desktop.appendChild(toast);
+  requestAnimationFrame(() => toast.classList.add("show"));
+  setTimeout(() => {
+    toast.classList.remove("show");
+    setTimeout(() => toast.remove(), 400);
+  }, 3500);
+}
 
 // --- Part 2: Live clock in the top bar ---
 const clock = document.getElementById("clock");
