@@ -36,43 +36,42 @@ These are fixed for the whole project. Do not break them without updating this f
 - **No backend.** Everything runs in the browser. Persistence (if any) uses `localStorage`.
 - **Mobile is secondary.** Target desktop browsers first; don't block on responsive layout.
 
-> There is a leftover `Grid.java` in this folder from an earlier (abandoned) idea. It is **not** part of this project and should be deleted.
-
 ---
 
 ## Project Structure
 
-Grow into this layout as parts get built — keep it flat and obvious.
+Current layout:
 
 ```
 Hamstersarus_Website/
 ├── index.html          # the whole OS lives in one page (welcome → desktop)
 ├── css/
-│   └── style.css       # all styling (one file until it gets unwieldy)
+│   └── style.css       # all styling + the design system
 ├── js/
-│   ├── os.js           # boot, desktop, top bar, clock
-│   ├── windows.js      # window create / drag / close / focus
-│   └── apps/           # one file per app
-│       └── <app>.js
-├── assets/             # images, icons, the Hamstersarus mascot
+│   ├── os.js           # boot, desktop, top bar, clock, icons, toast
+│   ├── windows.js      # window create / drag / close / focus + APPS registry
+│   └── apps/
+│       ├── game2048.js # buildGame2048()
+│       └── music.js    # musicPlayer singleton + buildMusicPlayer()
+├── assets/
+│   └── music/          # .mp3 tracks for the music app
+├── README.md           # human-facing overview
 └── CLAUDE.md           # this file
 ```
 
-Start with everything in `index.html` + `style.css` + `os.js` and split files out only when a section gets big. Don't pre-build empty folders.
+Keep it flat: one CSS file, simple apps inline in `windows.js`, and a file in `js/apps/` only for interactive apps that need real logic.
 
 ---
 
 ## The Build Plan (jam = 5 parts)
 
-Build in order. Each part should fully work and be committable before starting the next.
+All five parts are complete. Kept here as a record of what was built.
 
-- [ ] **Part 1 — Welcome screen.** The first thing a visitor sees: a branded boot/landing screen (Hamstersarus name + mascot) with an "Enter" action that reveals the desktop. Set the tone here.
-- [ ] **Part 2 — Desktop & top bar with clock.** The OS desktop (wallpaper + space for icons), a top bar, and a **live clock** that updates every second (`setInterval`, real time).
-- [ ] **Part 3 — Draggable, closable, openable windows.** A reusable window system: open a window, drag it by its title bar, bring it to front on click, and close it. This is the technical heart of the project — see [Window System](#window-system) below.
-- [ ] **Part 4 — First app (basic).** One simple app that opens in a window. Something personal — e.g. About Me, Notes, a photo viewer.
-- [ ] **Part 5 — Advanced app.** A second, more involved app — interactive and stateful (e.g. a mini-game, music player, paint app, terminal). Reuse the window system; don't reinvent it.
-
-When a part is done, tick its box and add any notes that future parts depend on.
+- [x] **Part 1 — Welcome screen.** Pixel logo + a neofetch-style terminal card; the "enter" button reveals the desktop.
+- [x] **Part 2 — Desktop & top bar with clock.** Graph-paper desktop, top bar, a live clock (`setInterval`, every second), and selectable desktop icons.
+- [x] **Part 3 — Draggable, closable, openable windows.** `createWindow()` in `js/windows.js` — drag by the title bar, click-to-front, close button, plus clamp-into-view. See [Window System](#window-system).
+- [x] **Part 4 — First app.** About Me (avatar, bio, likes/dislikes).
+- [x] **Part 5 — Advanced app.** Music player (shared singleton, auto-plays on enter) **and** a playable purple 2048 — 2048 is also the "feature the guide didn't list."
 
 ---
 
@@ -85,11 +84,11 @@ The window system from Part 3 is shared infrastructure — every app from Part 4
 - absolute positioning (`position: absolute; left/top`) so it can be moved freely
 - a `z-index` that increases when the window is focused, so the clicked window comes to front
 
-**Core behaviors:**
-- **Open** — a factory like `createWindow(title, contentEl)` builds the element, appends it to the desktop, and returns a handle.
-- **Drag** — `mousedown` on the title bar starts a drag; track the cursor offset, update `left`/`top` on `mousemove`, stop on `mouseup`. (Drag only by the title bar, never the whole window.)
-- **Focus** — clicking anywhere on a window raises it above the others (bump `z-index`).
-- **Close** — the close button removes the element from the DOM.
+**Core behaviors** (as implemented in `js/windows.js`):
+- **Open** — `createWindow({ id, title, content })` builds the element, cascades + clamps it into view, appends it to the desktop, and returns it. `content` may be an HTML string, a DOM node, or a builder function. `id` de-dupes: opening an already-open app just focuses it.
+- **Drag** — **pointer events** on the title bar: `pointerdown` (with `setPointerCapture`) starts the drag, `pointermove` updates `left`/`top` (clamped on-screen), `pointerup` ends it. Drag only by the title bar, never the whole window.
+- **Focus** — `pointerdown` anywhere on a window raises it above the others (bump `z-index`).
+- **Close** — the × button removes the element from the DOM (and clears it from the open-window map).
 
 Keep this generic: apps pass in their content and never touch dragging/z-index themselves.
 
@@ -99,16 +98,19 @@ Keep this generic: apps pass in their content and never touch dragging/z-index t
 
 Each app is self-contained and opens inside a standard window.
 
-- One app = one file in `js/apps/`, exposing an `open()` function that builds its content and calls `createWindow(...)`.
-- Apps are launched from a desktop icon and/or the top bar.
-- Apps should reflect *me* — the whole point of the jam is that exploring the OS teaches the visitor who Hamstersarus is.
+- Apps are registered in the `APPS` map in `js/windows.js` (keyed by the icon's `data-app`). Each entry has a `title` and `content`.
+- `content` is either an **HTML string** (simple apps) or a **builder function** in `js/apps/` that returns a DOM node (interactive apps, e.g. `buildGame2048`, `buildMusicPlayer`).
+- Apps are launched by double-clicking a desktop icon (`os.js` → `openApp(id)`).
+- Apps should reflect *me* — exploring the OS should teach the visitor who Hamstersarus is.
 
-| App | Part | Status | What it does |
-|-----|------|--------|--------------|
-| _(first app)_ | 4 | TODO | — |
-| _(advanced app)_ | 5 | TODO | — |
-
-Fill this table in as apps are designed.
+| App | Icon id | Status | What it does |
+|-----|---------|--------|--------------|
+| About Me | `about` | ✅ | Avatar, bio, likes/dislikes (HTML string) |
+| Music | `music` | ✅ | Shared `musicPlayer` singleton; auto-plays on enter, keeps playing when closed (`js/apps/music.js`) |
+| 2048 | `game` | ✅ | Playable purple 2048, arrow/WASD (`js/apps/game2048.js`) |
+| Notes | `notes` | placeholder | A `<textarea>` (does not persist yet) |
+| Gallery | `gallery` | placeholder | Emoji grid — swap for real images |
+| Trash | `trash` | placeholder | Decorative |
 
 ---
 
