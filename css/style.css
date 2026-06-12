@@ -37,11 +37,19 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* Lock the page to the viewport so nothing can scroll/shift
+   (e.g. arrow keys in the 2048 game must never move the page). */
+html, body {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
 body {
+  position: fixed;
+  inset: 0;
   font-family: var(--font-mono);
   color: var(--ink);
-  height: 100vh;
-  overflow: hidden;
 }
 
 .hidden { display: none !important; }
@@ -177,7 +185,7 @@ body {
 /* ============================================================
    Desktop + top bar
    ============================================================ */
-.desktop { position: relative; }
+.desktop { position: relative; overflow: hidden; }
 
 .top-bar {
   height: var(--top-bar-h);
@@ -251,10 +259,31 @@ body {
 /* ============================================================
    Placeholder app content (real apps arrive in Parts 4-5)
    ============================================================ */
-.app-about { display: grid; gap: 0.5rem; max-width: 260px; text-align: center; }
-.app-about-avatar { font-size: 2.6rem; }
-.app-about h2 { font-size: 1rem; color: var(--purple); }
-.app-about p { font-size: 0.85rem; line-height: 1.5; }
+.app-about { display: grid; gap: 0.7rem; max-width: 300px; }
+.app-about-head { display: flex; align-items: center; gap: 0.7rem; }
+.app-about-avatar {
+  font-size: 2.6rem;
+  filter: drop-shadow(0 0 6px rgba(187, 154, 247, 0.6));
+}
+.app-about h2 { font-size: 1.1rem; color: var(--purple); }
+.app-about-tag {
+  font-family: var(--font-terminal);
+  font-size: 1rem;
+  color: var(--cyan);
+}
+.app-about-bio { font-size: 0.85rem; line-height: 1.5; }
+.app-about-cols { display: flex; gap: 1rem; }
+.app-about-cols > div { flex: 1; }
+.app-about-cols h3 { font-size: 0.8rem; margin-bottom: 0.3rem; color: var(--pink); }
+.app-about-cols ul { list-style: none; display: grid; gap: 0.2rem; }
+.app-about-cols li { font-size: 0.8rem; padding-left: 0.9rem; position: relative; }
+.app-about-cols li::before {
+  content: "✦";
+  position: absolute;
+  left: 0;
+  color: var(--purple);
+  font-size: 0.7rem;
+}
 
 .app-notes {
   width: 250px;
@@ -270,15 +299,91 @@ body {
 }
 .app-notes:focus { outline: 1px solid var(--purple); }
 
-.app-music { display: grid; gap: 0.5rem; text-align: center; }
+.app-music { display: grid; gap: 0.5rem; text-align: center; min-width: 180px; }
 .app-music-art { font-size: 3rem; }
+.app-music-art.spin { animation: spin 3s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
 .app-music-track {
   font-family: var(--font-terminal);
   font-size: 1.2rem;
   color: var(--cyan);
 }
-.app-music-controls { font-size: 1.2rem; letter-spacing: 0.4rem; }
+.app-music-controls { display: flex; justify-content: center; gap: 0.7rem; }
+.app-music-controls button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--ink);
+}
+.app-music-controls button:hover { color: var(--purple); }
 
 .app-gallery { font-size: 2rem; letter-spacing: 0.4rem; line-height: 1.6; max-width: 220px; }
 
 .app-trash { font-family: var(--font-terminal); font-size: 1.2rem; }
+
+/* ============================================================
+   2048 (advanced app) — purple themed
+   ============================================================ */
+.g2048 { display: grid; gap: 0.6rem; width: 280px; }
+.g2048-top { display: flex; justify-content: space-between; align-items: center; }
+.g2048-score { font-family: var(--font-terminal); font-size: 1.15rem; color: var(--cyan); }
+.g2048-score b { color: var(--ink); }
+.g2048-new {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--win-bg);
+  background: var(--purple);
+  border: none;
+  border-radius: 5px;
+  padding: 0.35rem 0.6rem;
+  cursor: pointer;
+}
+.g2048-new:hover { filter: brightness(1.08); }
+
+.g2048-board {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  padding: 8px;
+  background: #2a2440;
+  border-radius: 8px;
+}
+.g2048-cell {
+  min-width: 0;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  background: rgba(187, 154, 247, 0.1);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #2a2440;
+}
+.g2048-cell[data-v="0"]    { color: transparent; }
+.g2048-cell[data-v="2"]    { background: #ded9f5; color: #3a2f5c; }
+.g2048-cell[data-v="4"]    { background: #cbbdf3; color: #3a2f5c; }
+.g2048-cell[data-v="8"]    { background: #bb9af7; color: #fff; }
+.g2048-cell[data-v="16"]   { background: #a87df2; color: #fff; }
+.g2048-cell[data-v="32"]   { background: #9866ee; color: #fff; }
+.g2048-cell[data-v="64"]   { background: #8650e6; color: #fff; }
+.g2048-cell[data-v="128"]  { background: #7a3fd8; color: #fff; font-size: 1.05rem; }
+.g2048-cell[data-v="256"]  { background: #6c2fc8; color: #fff; font-size: 1.05rem; }
+.g2048-cell[data-v="512"]  { background: #5e23b8; color: #fff; font-size: 1.05rem; }
+.g2048-cell[data-v="1024"] { background: #7a2fa8; color: #fff; font-size: 0.9rem; }
+.g2048-cell[data-v="2048"] {
+  background: #ff79c6;
+  color: #fff;
+  font-size: 0.9rem;
+  box-shadow: 0 0 14px rgba(255, 121, 198, 0.7);
+}
+
+.g2048-msg {
+  text-align: center;
+  font-family: var(--font-terminal);
+  font-size: 1.2rem;
+  color: var(--pink);
+  min-height: 1.2rem;
+}
+.g2048-hint { text-align: center; font-size: 0.7rem; color: var(--muted); }

@@ -13,6 +13,18 @@ function focusWindow(win) {
   win.style.zIndex = topZ;
 }
 
+// Nudge a window so it sits fully on-screen (below the top bar).
+const TOP_BAR = 34;
+function clampIntoView(win) {
+  const margin = 8;
+  const maxLeft = Math.max(margin, window.innerWidth - win.offsetWidth - margin);
+  const maxTop = Math.max(TOP_BAR + margin, window.innerHeight - win.offsetHeight - margin);
+  const left = Math.min(parseInt(win.style.left, 10) || 0, maxLeft);
+  const top = Math.min(Math.max(parseInt(win.style.top, 10) || 0, TOP_BAR + margin), maxTop);
+  win.style.left = left + "px";
+  win.style.top = top + "px";
+}
+
 // Build and show a window. Returns the window element.
 // content can be an HTML string or a DOM node.
 function createWindow({ id, title, content }) {
@@ -46,6 +58,7 @@ function createWindow({ id, title, content }) {
   cascade = (cascade + 28) % 140;
 
   desktopEl.appendChild(win);
+  clampIntoView(win); // pull it fully on-screen now that we know its size
   focusWindow(win);
   if (id) openWindows[id] = win;
 
@@ -98,28 +111,44 @@ function makeDraggable(win, handle) {
 // Simple placeholder apps so the windows have something to show.
 // Parts 4 & 5 replace these with the real "first app" and "advanced app".
 const APPS = {
+  // Part 4 — first real app. Personalize the text below with your own info.
   about: {
     title: "~/about-me",
     content:
       '<div class="app-about">' +
-      '<div class="app-about-avatar">🐹</div>' +
-      "<h2>hi, i'm Hamstersarus!</h2>" +
-      "<p>welcome to my little operating system. poke around the icons to " +
-      "get to know me. (placeholder — edit me in Part 4!)</p>" +
+        '<div class="app-about-head">' +
+          '<div class="app-about-avatar">🐹</div>' +
+          "<div>" +
+            "<h2>Hamstersarus</h2>" +
+            '<p class="app-about-tag">she/her · webOS enjoyer</p>' +
+          "</div>" +
+        "</div>" +
+        '<p class="app-about-bio">hi! i\'m a Hack Club member building my corner ' +
+        "of the internet as a tiny operating system. click around the desktop " +
+        "to get to know me.</p>" +
+        '<div class="app-about-cols">' +
+          "<div><h3>likes</h3><ul>" +
+            "<li>pixel art</li><li>late-night coding</li>" +
+            "<li>lavender everything</li><li>my mascot 🐹</li>" +
+          "</ul></div>" +
+          "<div><h3>dislikes</h3><ul>" +
+            "<li>boring websites</li><li>popups</li><li>full storage</li>" +
+          "</ul></div>" +
+        "</div>" +
       "</div>",
   },
   notes: {
     title: "~/notes",
     content: '<textarea class="app-notes" placeholder="type something..."></textarea>',
   },
+  // advanced apps — content is a builder function (see js/apps/)
   music: {
     title: "~/music",
-    content:
-      '<div class="app-music">' +
-      '<div class="app-music-art">💿</div>' +
-      '<p class="app-music-track">nothing playing</p>' +
-      '<div class="app-music-controls">⏮ ⏯ ⏭</div>' +
-      "</div>",
+    content: buildMusicPlayer,
+  },
+  game: {
+    title: "~/2048",
+    content: buildGame2048,
   },
   gallery: {
     title: "~/gallery",
@@ -134,5 +163,8 @@ const APPS = {
 // Open an app by its icon id (called from os.js on double-click).
 function openApp(appId) {
   const app = APPS[appId];
-  if (app) createWindow({ id: appId, title: app.title, content: app.content });
+  if (!app) return;
+  // content may be an HTML string, a DOM node, or a builder function
+  const content = typeof app.content === "function" ? app.content() : app.content;
+  createWindow({ id: appId, title: app.title, content });
 }
