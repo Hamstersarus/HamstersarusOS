@@ -1,10 +1,12 @@
-> **For Claude.** This file is the single source of truth for the Hamstersarus webOS project. Everything built here must follow it. When a decision is made that affects future work, record it here so the next session stays consistent. For a human-facing overview, see [README.md](README.md) (create when ready).
+> **For Claude.** This file is the single source of truth for the Hamstersarus webOS project. Everything built here must follow it. When a decision is made that affects future work, record it here so the next session stays consistent. For a human-facing overview, see [README.md](README.md).
 
-# Hamstersarus — a personal webOS
+# Hamstersarus — a personal webOS portfolio
 
-A web-based operating system that *is* my personal website. Instead of a plain page, visitors land on a desktop and get to know me (Hamstersarus) by exploring windows and apps.
+A web-based operating system that *is* my personal website **and portfolio**. Instead of a plain page, visitors land on a desktop and get to know me (Ayla / Hamstersarus) — and my skills, projects, and resume — by exploring windows and apps.
 
 Built for the **Hack Club Stardance** event, following the **webOS jam**: <https://jams.hackclub.com/batch/webOS>.
+
+> **Privacy:** the site is fully public (no password). Never put personal/contact details that shouldn't be world-readable on it — specifically **no home address, no phone number, and no third party's contact info**. Resume content is the professional parts only (education, experience, skills, awards, GitHub).
 
 > "What if instead of directing random strangers to your boring personal website, you could direct them to an entire OS — where through exploring, they get to know you?"
 
@@ -105,7 +107,11 @@ Each app is self-contained and opens inside a standard window.
 
 | App | Icon id | Status | What it does |
 |-----|---------|--------|--------------|
-| About Me | `about` | ✅ | Avatar, bio, likes/dislikes (HTML string) |
+| About Me | `about` | ✅ | Name, tag, bio, likes/dislikes (HTML string) |
+| Projects | `projects` | ✅ | Project cards (desc + tech + links); scrolls if long |
+| Skills | `skills` | ✅ | Proficiency bars via `lvl-1`…`lvl-5` classes |
+| Resume | `resume` | ✅ | Education / experience / awards — **professional info only** |
+| Contact | `contact` | ✅ | GitHub + email links (no address/phone) |
 | Music | `music` | ✅ | Shared `musicPlayer` singleton; auto-plays on enter, keeps playing when closed (`js/apps/music.js`) |
 | 2048 | `game` | ✅ | Playable purple 2048, arrow/WASD (`js/apps/game2048.js`) |
 | Notes | `notes` | placeholder | A `<textarea>` (does not persist yet) |

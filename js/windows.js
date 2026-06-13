@@ -119,17 +119,17 @@ const APPS = {
         '<div class="app-about-head">' +
           '<div class="app-about-avatar">🐹</div>' +
           "<div>" +
-            "<h2>Hamstersarus</h2>" +
-            '<p class="app-about-tag">she/her · webOS enjoyer</p>' +
+            "<h2>Ayla Vaynerman</h2>" +
+            '<p class="app-about-tag">student developer · she/her</p>' +
           "</div>" +
         "</div>" +
-        '<p class="app-about-bio">hi! i\'m a Hack Club member building my corner ' +
-        "of the internet as a tiny operating system. click around the desktop " +
-        "to get to know me.</p>" +
+        '<p class="app-about-bio">10th grader at Langley High School taking AP ' +
+        "Computer Science A. i love building things — from spacecraft sensor " +
+        "drivers to little operating systems like this one.</p>" +
         '<div class="app-about-cols">' +
           "<div><h3>likes</h3><ul>" +
-            "<li>pixel art</li><li>late-night coding</li>" +
-            "<li>lavender everything</li><li>my mascot 🐹</li>" +
+            "<li>building things</li><li>Java</li>" +
+            "<li>tennis</li><li>pixel art</li>" +
           "</ul></div>" +
           "<div><h3>dislikes</h3><ul>" +
             "<li>boring websites</li><li>popups</li><li>full storage</li>" +
@@ -137,6 +137,88 @@ const APPS = {
         "</div>" +
       "</div>",
   },
+
+  // ---- Portfolio apps (placeholder content — swap in your real info) ----
+  projects: {
+    title: "~/projects",
+    content:
+      '<div class="app-projects">' +
+        '<article class="proj-card">' +
+          "<h3>HamstersarusOS 🐹</h3>" +
+          "<p>my personal portfolio, built as a tiny web operating system.</p>" +
+          '<p class="proj-tech">HTML · CSS · JavaScript</p>' +
+          '<div class="proj-links">' +
+            '<a href="https://hamstersarus.github.io/Hamstersarus_Website/" target="_blank" rel="noopener noreferrer">live ▸</a>' +
+            '<a href="https://github.com/Hamstersarus/Hamstersarus_Website" target="_blank" rel="noopener noreferrer">code ▸</a>' +
+          "</div>" +
+        "</article>" +
+        '<article class="proj-card">' +
+          "<h3>SENTINEL 👁️</h3>" +
+          "<p>a terminal narrative game set in a surveillance state — you're a data " +
+          "analyst forced to choose between enforcing the system and protecting people. " +
+          "Inspired by Papers, Please.</p>" +
+          '<p class="proj-tech">Python</p>' +
+          '<div class="proj-links"><a href="https://github.com/Hamstersarus/Dystopian-Future-Game" target="_blank" rel="noopener noreferrer">code ▸</a></div>' +
+        "</article>" +
+        '<article class="proj-card">' +
+          "<h3>Fight ⚔️</h3>" +
+          "<p>a turn-based fighting game on a 10×10 arena — 10 characters with special " +
+          "abilities, shields, and a matchmaking system. My final AP CS A project.</p>" +
+          '<p class="proj-tech">Java</p>' +
+          '<div class="proj-links"><a href="https://github.com/Hamstersarus/FightGame" target="_blank" rel="noopener noreferrer">code ▸</a></div>' +
+        "</article>" +
+        '<article class="proj-card">' +
+          "<h3>2048 🔢</h3>" +
+          "<p>a terminal version of the 2048 puzzle game — slide and merge tiles to reach 2048.</p>" +
+          '<p class="proj-tech">Java</p>' +
+          '<div class="proj-links"><a href="https://github.com/Hamstersarus/2048" target="_blank" rel="noopener noreferrer">code ▸</a></div>' +
+        "</article>" +
+      "</div>",
+  },
+  skills: {
+    title: "~/skills",
+    content:
+      '<div class="app-skills">' +
+        '<div class="skill"><span class="skill-name">Java</span><span class="skill-bar lvl-4"></span></div>' +
+        '<div class="skill"><span class="skill-name">Python (CircuitPython)</span><span class="skill-bar lvl-3"></span></div>' +
+        '<div class="skill"><span class="skill-name">HTML &amp; CSS</span><span class="skill-bar lvl-4"></span></div>' +
+        '<div class="skill"><span class="skill-name">JavaScript</span><span class="skill-bar lvl-3"></span></div>' +
+        '<div class="skill"><span class="skill-name">Git / GitLab</span><span class="skill-bar lvl-3"></span></div>' +
+        '<p class="app-note">levels are rough — tweak any of them</p>' +
+      "</div>",
+  },
+  resume: {
+    title: "~/resume",
+    content:
+      '<div class="app-resume">' +
+        "<section><h3>education</h3>" +
+          "<p>Langley High School — 10th grade.<br>" +
+          "AP Computer Science A (2025–26): Java, OOP, data structures, algorithms.</p></section>" +
+        "<section><h3>experience</h3>" +
+          "<p><b>Software Engineering Intern</b> — New Ascent (May–Aug 2025)<br>" +
+          "Worked on the ChipSat educational spacecraft: CircuitPython on a Raspberry Pi " +
+          "RP2040, wrote a driver for the MS5607 pressure sensor (I2C), and a board-target " +
+          "config (I2C addresses, SPI pins). Joined code reviews and pushed to the team GitLab.</p>" +
+          "<p><b>Tennis Camp Counselor</b> — JCC (2024–2025)<br>" +
+          "Helped lead groups of kids ages 7–13.</p>" +
+        "</section>" +
+        "<section><h3>languages &amp; awards</h3><ul>" +
+          "<li>Russian — advanced (reading, writing, speaking)</li>" +
+          "<li>🥇 Gold, Russian Olympiad — George Mason, 2025</li>" +
+          "<li>🥈 Silver, Russian Essay Contest — Langley, 2024</li>" +
+        "</ul></section>" +
+      "</div>",
+  },
+  contact: {
+    title: "~/contact",
+    content:
+      '<div class="app-contact">' +
+        '<a class="contact-link" href="https://github.com/Hamstersarus" target="_blank" rel="noopener noreferrer">🐙 GitHub — @Hamstersarus</a>' +
+        '<a class="contact-link" href="https://www.linkedin.com/in/ayla-vaynerman-216341373/" target="_blank" rel="noopener noreferrer">💼 LinkedIn — Ayla Vaynerman</a>' +
+        '<a class="contact-link" href="mailto:ayla.vaynerman@gmail.com">✉️ ayla.vaynerman@gmail.com</a>' +
+      "</div>",
+  },
+
   notes: {
     title: "~/notes",
     content: '<textarea class="app-notes" placeholder="type something..."></textarea>',

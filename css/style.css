@@ -233,9 +233,12 @@ body {
   list-style: none;
   position: absolute;
   top: calc(var(--top-bar-h) + 1rem);
+  bottom: 1rem;
   left: 1rem;
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;          /* wrap into a 2nd column if there are many icons */
+  align-content: flex-start;
   gap: 0.4rem;
 }
 
@@ -340,6 +343,84 @@ body {
 .app-gallery { font-size: 2rem; letter-spacing: 0.4rem; line-height: 1.6; max-width: 220px; }
 
 .app-trash { font-family: var(--font-terminal); font-size: 1.2rem; }
+
+/* ============================================================
+   Portfolio apps
+   ============================================================ */
+.app-note { font-size: 0.7rem; color: var(--muted); font-style: italic; }
+
+/* Projects */
+.app-projects { display: grid; gap: 0.7rem; width: 300px; max-height: 62vh; overflow-y: auto; }
+.proj-card {
+  display: grid;
+  gap: 0.3rem;
+  padding: 0.7rem 0.8rem;
+  background: var(--win-bg-2);
+  border: 1px solid rgba(187, 154, 247, 0.25);
+  border-radius: 8px;
+}
+.proj-card h3 { font-size: 0.95rem; color: var(--purple); }
+.proj-card p { font-size: 0.8rem; line-height: 1.4; }
+.proj-tech { font-family: var(--font-terminal); font-size: 1rem; color: var(--cyan); }
+.proj-links { display: flex; gap: 0.9rem; margin-top: 0.2rem; }
+.proj-links a { font-size: 0.8rem; color: var(--pink); text-decoration: none; }
+.proj-links a:hover { text-decoration: underline; }
+
+/* Skills (proficiency bars via lvl-1 … lvl-5 classes) */
+.app-skills { display: grid; gap: 0.6rem; width: 240px; }
+.skill { display: grid; gap: 0.25rem; }
+.skill-name { font-size: 0.8rem; }
+.skill-bar {
+  display: block;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(187, 154, 247, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+.skill-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 4px;
+  background: var(--purple);
+}
+.skill-bar.lvl-1::after { width: 20%; }
+.skill-bar.lvl-2::after { width: 40%; }
+.skill-bar.lvl-3::after { width: 60%; }
+.skill-bar.lvl-4::after { width: 80%; }
+.skill-bar.lvl-5::after { width: 100%; }
+
+/* Resume */
+.app-resume { display: grid; gap: 0.7rem; width: 280px; max-height: 62vh; overflow-y: auto; }
+.app-resume section { display: grid; gap: 0.2rem; }
+.app-resume h3 { font-size: 0.85rem; color: var(--pink); }
+.app-resume p, .app-resume li { font-size: 0.8rem; line-height: 1.4; }
+.app-resume ul { padding-left: 1rem; }
+.btn {
+  justify-self: start;
+  padding: 0.45rem 0.8rem;
+  background: var(--purple);
+  color: var(--win-bg);
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  text-decoration: none;
+}
+.btn:hover { filter: brightness(1.08); }
+
+/* Contact */
+.app-contact { display: grid; gap: 0.55rem; width: 240px; }
+.contact-link {
+  padding: 0.5rem 0.7rem;
+  background: var(--win-bg-2);
+  border: 1px solid rgba(187, 154, 247, 0.25);
+  border-radius: 7px;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+.contact-link:hover { border-color: var(--purple); color: var(--purple); }
 
 /* ============================================================
    2048 (advanced app) — purple themed
