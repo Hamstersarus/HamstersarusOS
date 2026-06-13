@@ -148,8 +148,8 @@ const APPS = {
           "<p>my personal portfolio, built as a tiny web operating system.</p>" +
           '<p class="proj-tech">HTML · CSS · JavaScript</p>' +
           '<div class="proj-links">' +
-            '<a href="https://hamstersarus.github.io/Hamstersarus_Website/" target="_blank" rel="noopener noreferrer">live ▸</a>' +
-            '<a href="https://github.com/Hamstersarus/Hamstersarus_Website" target="_blank" rel="noopener noreferrer">code ▸</a>' +
+            '<a href="https://hamstersarus.github.io/HamstersarusOS/" target="_blank" rel="noopener noreferrer">live ▸</a>' +
+            '<a href="https://github.com/Hamstersarus/HamstersarusOS" target="_blank" rel="noopener noreferrer">code ▸</a>' +
           "</div>" +
         "</article>" +
         '<article class="proj-card">' +

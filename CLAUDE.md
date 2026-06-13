@@ -45,7 +45,7 @@ These are fixed for the whole project. Do not break them without updating this f
 Current layout:
 
 ```
-Hamstersarus_Website/
+HamstersarusOS/
 ├── index.html          # the whole OS lives in one page (welcome → desktop)
 ├── css/
 │   └── style.css       # all styling + the design system

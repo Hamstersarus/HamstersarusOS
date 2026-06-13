@@ -2,7 +2,7 @@
 
 A personal website built as a tiny **web operating system**. Instead of a plain "about me" page, you land on a desktop and get to know me by clicking around — opening windows, playing games, and poking through apps.
 
-### ▸ [Open the live site](https://hamstersarus.github.io/Hamstersarus_Website/)
+### ▸ [Open the live site](https://hamstersarus.github.io/HamstersarusOS/)
 
 Built for **Hack Club Stardance**, following the [webOS jam](https://jams.hackclub.com/batch/webOS).
 
@@ -33,7 +33,7 @@ A dreamy **lavender "Tokyo Night"** desktop crossed with a **Y2K Windows scrapbo
 Plain **HTML, CSS, and JavaScript** — no frameworks, no build tools. It runs by simply opening the page.
 
 ```
-Hamstersarus_Website/
+HamstersarusOS/
 ├── index.html        # the whole OS
 ├── css/style.css     # all styling + the design system
 ├── js/
