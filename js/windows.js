@@ -128,8 +128,8 @@ const APPS = {
         "drivers to little operating systems like this one.</p>" +
         '<div class="app-about-cols">' +
           "<div><h3>likes</h3><ul>" +
-            "<li>building things</li><li>Java</li>" +
-            "<li>tennis</li><li>pixel art</li>" +
+            "<li>building things</li><li>hamsters</li>" +
+            "<li>purple</li><li>art</li>" +
           "</ul></div>" +
           "<div><h3>dislikes</h3><ul>" +
             "<li>boring websites</li><li>popups</li><li>full storage</li>" +
@@ -184,7 +184,6 @@ const APPS = {
         '<div class="skill"><span class="skill-name">HTML &amp; CSS</span><span class="skill-bar lvl-4"></span></div>' +
         '<div class="skill"><span class="skill-name">JavaScript</span><span class="skill-bar lvl-3"></span></div>' +
         '<div class="skill"><span class="skill-name">Git / GitLab</span><span class="skill-bar lvl-3"></span></div>' +
-        '<p class="app-note">levels are rough — tweak any of them</p>' +
       "</div>",
   },
   resume: {
