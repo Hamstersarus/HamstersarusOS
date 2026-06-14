@@ -219,8 +219,8 @@ const APPS = {
   },
 
   notes: {
-    title: "~/notes",
-    content: '<textarea class="app-notes" placeholder="type something..."></textarea>',
+    title: "~/message",
+    content: buildNotes, // a "message me" box that posts to Discord (js/apps/notes.js)
   },
   // advanced apps — content is a builder function (see js/apps/)
   music: {

@@ -307,11 +307,12 @@ body {
   font-size: 0.7rem;
 }
 
-.app-notes {
-  width: 250px;
-  height: 150px;
-  resize: none;
-  padding: 0.6rem;
+/* Message-me app (posts to Discord) */
+.app-message { display: grid; gap: 0.5rem; width: 240px; }
+.app-message-intro { font-size: 0.8rem; line-height: 1.4; }
+.app-message-from,
+.app-message-text {
+  padding: 0.5rem;
   background: var(--win-bg-2);
   color: var(--ink);
   border: 1px solid rgba(187, 154, 247, 0.35);
@@ -319,7 +320,25 @@ body {
   font-family: var(--font-mono);
   font-size: 0.85rem;
 }
-.app-notes:focus { outline: 1px solid var(--purple); }
+.app-message-from:focus,
+.app-message-text:focus { outline: 1px solid var(--purple); }
+.app-message-text { height: 110px; resize: none; }
+.app-message-send {
+  justify-self: start;
+  padding: 0.45rem 0.9rem;
+  background: var(--purple);
+  color: var(--win-bg);
+  border: none;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.app-message-send:hover { filter: brightness(1.08); }
+.app-message-send:disabled { opacity: 0.6; cursor: default; }
+.app-message-status { font-size: 0.75rem; min-height: 1rem; }
+.app-message-status.ok { color: var(--green); }
+.app-message-status.err { color: var(--pink); }
 
 .app-music { display: grid; gap: 0.5rem; text-align: center; min-width: 180px; }
 .app-music-art { font-size: 3rem; }
