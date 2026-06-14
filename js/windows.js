@@ -235,9 +235,9 @@ const APPS = {
     title: "~/gallery",
     content: '<div class="app-gallery">🌸 ⭐ 🐹 🌙 ✨ 🍓</div>',
   },
-  trash: {
-    title: "~/trash",
-    content: '<p class="app-trash">🗑️ trash is empty. squeaky clean!</p>',
+  fortune: {
+    title: "~/hamster-ball",
+    content: buildHamsterBall, // Magic Hamster Ball (js/apps/fortune.js)
   },
 };
 

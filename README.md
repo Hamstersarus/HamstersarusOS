@@ -26,7 +26,7 @@ Double click the desktop icons to open apps.
 - **Music player 🎵** - lofi tracks start playing the moment you enter, with a "now playing" notification. Play / pause / skip from the app, and it keeps playing even after you close its window.
 - **2048 🎮** - a fully playable, purple-themed version of the game.
 - **Message me 💬** - leave a message and it goes straight to my inbox.
-- **Gallery & Trash** - small extra apps to explore.
+- **Magic Hamster Ball** - magic-8-ball type fortune teller with a hamster telling your fortune.
 
 ## 🎮 Controls
 
@@ -37,6 +37,14 @@ Double click the desktop icons to open apps.
 ## 🎨 The look
 
 A dreamy **lavender "Tokyo Night"** desktop crossed with a **Y2K Windows scrapbook** vibe, soft purple graph paper, dark windows with neon-purple borders, and pixel + retro-terminal fonts. The wallpaper grid is pure CSS (no image!).
+
+## 🪄 Inspiration
+
+I really like customizing my desktop so I have spent a lot of time researching. The desktop aesthetic with the purple effects and the Y2K look comes from a combination of desktop rice looks and old aesthetics from my **many** moodboards. I also **reallyyy** like hamsters (sooo difficult to tell, I know).
+
+## 💬 Message Me
+
+While drafting ideas of different things I could make, I decided it would be interesting to make an app that would allow the user to send messages directly towards me. My first idea was to make a Gmail, but I decided to link a Discord webhook through Cloudflare.
 
 ## 🛠️ Built with
 

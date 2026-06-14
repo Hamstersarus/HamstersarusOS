@@ -114,9 +114,39 @@ Each app is self-contained and opens inside a standard window.
 | Contact | `contact` | ✅ | GitHub + email links (no address/phone) |
 | Music | `music` | ✅ | Shared `musicPlayer` singleton; auto-plays on enter, keeps playing when closed (`js/apps/music.js`) |
 | 2048 | `game` | ✅ | Playable purple 2048, arrow/WASD (`js/apps/game2048.js`) |
-| Notes | `notes` | placeholder | A `<textarea>` (does not persist yet) |
+| Message | `notes` | ✅ | Message form → Cloudflare Worker → Discord; frontend rate limit (`js/apps/notes.js`, `worker/message-proxy.js`) |
 | Gallery | `gallery` | placeholder | Emoji grid — swap for real images |
-| Trash | `trash` | placeholder | Decorative |
+| Magic Hamster Ball | `fortune` | ✅ | Hamster-pun Magic 8-Ball — replaced Trash (`js/apps/fortune.js`) |
+
+### Plan — Magic Hamster Ball (replaces Trash)
+
+**Concept.** A hamster-pun Magic 8-Ball: an 8-ball is a ball, and a hamster runs in a *hamster ball* — same object. Ask a yes/no question, shake the ball, and the hamster rolls up an answer. Pure flavor (non-functional), reuses the window system, no image assets.
+
+**Desktop icon.** Replaces 🗑️ trash → 🔮 labelled `fortune`, `data-app="fortune"`.
+
+**Files to touch.**
+- `js/apps/fortune.js` — **new.** `buildHamsterBall()` returns the app's DOM node (interactive → its own file, like game2048/music).
+- `js/windows.js` — add `fortune: { title: "~/hamster-ball", content: buildHamsterBall }` to `APPS`; **remove** the `trash` entry.
+- `index.html` — swap the `trash` `<li>` for the `fortune` icon; add `<script src="js/apps/fortune.js">` before `windows.js`.
+- `css/style.css` — `.app-fortune` styles (the ball, wobble animation, answer text); the old `.app-trash` rule can go.
+
+**Structure (inside the window).**
+- `.fortune-ball` — round purple ball with a 🐹 inside and a soft neon glow.
+- `.fortune-question` — text input for the yes/no question.
+- `.fortune-shake` — "shake" button.
+- `.fortune-answer` — where the answer fades in.
+
+**Behaviour.**
+- Shake (button click, or Enter in the input): if the question is empty, nudge *"ask me something first 🐹"*. Otherwise add a `.shaking` class (wobble `@keyframes`, ~0.6s), clear the old answer, then reveal a random answer.
+- `ANSWERS` — flat array of ~16 punny strings (yes / maybe / no mix), picked uniformly at random. Avoid repeating the immediately-previous answer.
+- No persistence, no network.
+
+**Answer set (starter — tweak freely).**
+Yes: "Squeak yes! 🐹" · "All signs point to seeds." · "Cheeks don't lie — yes." · "By the power of the wheel, yes. 🎡" · "It is written in the seeds."
+Maybe: "Ask again after my nap. 😴" · "The wheel is still spinning…" · "Reply hazy — too much sawdust." · "Cheeks too full to answer." · "Consult the bedding and try again."
+No: "Not a chance, you absolute walnut." · "No. *aggressively stuffs cheeks*" · "The seeds say no." · "My whiskers sense doubt." · "Don't count your seeds before they sprout."
+
+**Style notes.** Purple radial-gradient ball + neon glow (reuse `--purple`/glow pattern), VT323 for the answer text, wobble via `@keyframes`. Keep within the floating-window sizing (it's decorative — fine to be small).
 
 ---
 
