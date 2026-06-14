@@ -25,6 +25,7 @@ Double click the desktop icons to open apps.
 - **Draggable windows** - drag them by the title bar, click to bring one to the front, and close them with the ×.
 - **Music player 🎵** - lofi tracks start playing the moment you enter, with a "now playing" notification. Play / pause / skip from the app, and it keeps playing even after you close its window.
 - **2048 🎮** - a fully playable, purple-themed version of the game.
+- **Message me 💬** - leave a message and it goes straight to my inbox.
 - **Gallery & Trash** - small extra apps to explore.
 
 ## 🎮 Controls
