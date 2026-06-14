@@ -1,12 +1,9 @@
 // HamstersarusOS — "message me" app.
-// Sends whatever the visitor types straight to a Discord channel via a webhook.
-//
-// SETUP: create a Discord webhook (Server Settings -> Integrations -> Webhooks
-// -> New Webhook -> Copy Webhook URL) and paste it below.
-// NOTE: this URL is visible in the public page source. A webhook can only POST
-// messages to its one channel; if it ever gets spammed, delete it and make a new one.
+// Sends the visitor's message to a Cloudflare Worker, which forwards it to
+// Discord. The real Discord webhook lives as a hidden secret inside the Worker
+// (see worker/message-proxy.js), so it's never exposed in this public code.
 
-const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1515168582210949172/qVfYnrP4EMd7jk_UR6oCjXLcYUGIXszaDhrfoQUezgp6gTpSy_nvTXUe8YPLnTAoUFNj";
+const MESSAGE_ENDPOINT = "https://hamstersarus-message.ayla-vaynerman.workers.dev/";
 
 // Frontend rate limit (stops casual/accidental spam; not real security —
 // a determined person can bypass client-side JS).
@@ -89,8 +86,8 @@ function buildNotes() {
       setStatus("write something first!", "err");
       return;
     }
-    if (DISCORD_WEBHOOK_URL.startsWith("PASTE_")) {
-      setStatus("not set up yet — add a Discord webhook URL in js/apps/notes.js", "err");
+    if (MESSAGE_ENDPOINT.startsWith("PASTE_")) {
+      setStatus("not set up yet — add your Worker URL in js/apps/notes.js", "err");
       return;
     }
 
@@ -112,13 +109,10 @@ function buildNotes() {
     sendBtn.disabled = true;
     setStatus("sending...");
     try {
-      const res = await fetch(DISCORD_WEBHOOK_URL, {
+      const res = await fetch(MESSAGE_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username: from + " (via HamstersarusOS)",
-          content: message,
-        }),
+        body: JSON.stringify({ name: from, message: message }),
       });
       if (res.ok) {
         fromEl.value = "";
