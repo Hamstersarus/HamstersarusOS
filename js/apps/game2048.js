@@ -142,6 +142,29 @@ function buildGame2048() {
   }
   document.addEventListener("keydown", onKey);
 
+  // touch: swipe the board to move (mobile)
+  let startX = 0;
+  let startY = 0;
+  boardEl.addEventListener(
+    "touchstart",
+    (e) => {
+      startX = e.changedTouches[0].clientX;
+      startY = e.changedTouches[0].clientY;
+    },
+    { passive: true }
+  );
+  boardEl.addEventListener(
+    "touchend",
+    (e) => {
+      const dx = e.changedTouches[0].clientX - startX;
+      const dy = e.changedTouches[0].clientY - startY;
+      if (Math.max(Math.abs(dx), Math.abs(dy)) < 24) return; // ignore taps
+      if (Math.abs(dx) > Math.abs(dy)) move(dx > 0 ? "right" : "left");
+      else move(dy > 0 ? "down" : "up");
+    },
+    { passive: true }
+  );
+
   root.querySelector(".g2048-new").addEventListener("click", reset);
   reset();
   return root;

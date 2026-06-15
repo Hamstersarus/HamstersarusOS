@@ -40,15 +40,17 @@ setInterval(updateClock, 1000);
 
 // --- Part 2: Desktop icons ---
 const icons = document.querySelectorAll(".icon");
+const isTouch = window.matchMedia("(pointer: coarse)").matches;
 
 icons.forEach((icon) => {
-  // single click selects (deselect the others)
+  // click selects (deselect the others); on touch, a single tap also opens
   icon.addEventListener("click", () => {
     icons.forEach((i) => i.classList.remove("selected"));
     icon.classList.add("selected");
+    if (isTouch) openApp(icon.dataset.app);
   });
 
-  // double click opens the app's window (defined in js/windows.js)
+  // on desktop (mouse), double-click opens the app (defined in js/windows.js)
   icon.addEventListener("dblclick", () => {
     openApp(icon.dataset.app);
   });

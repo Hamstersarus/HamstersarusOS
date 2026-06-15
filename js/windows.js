@@ -233,7 +233,12 @@ const APPS = {
   },
   gallery: {
     title: "~/gallery",
-    content: '<div class="app-gallery">🌸 ⭐ 🐹 🌙 ✨ 🍓</div>',
+    content:
+      '<figure class="app-gallery">' +
+        '<img class="gallery-photo" src="assets/images/chipsat.jpg" ' +
+        'alt="A chipsat I worked on for the company New Ascent" />' +
+        '<figcaption class="gallery-caption">A chipsat I worked on for the company New Ascent</figcaption>' +
+      "</figure>",
   },
   fortune: {
     title: "~/hamster-ball",

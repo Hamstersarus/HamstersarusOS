@@ -50,6 +50,7 @@ body {
   inset: 0;
   font-family: var(--font-mono);
   color: var(--ink);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .hidden { display: none !important; }
@@ -113,16 +114,21 @@ body {
   cursor: pointer;
 }
 .title-bar-close:hover { color: var(--pink); }
+@media (pointer: coarse) {
+  .title-bar-close { font-size: 1.4rem; padding: 0 0.55rem; }
+}
 
 .window-body { padding: 1rem; }
+/* keep app content from overflowing narrow (mobile) screens */
+.window-body > * { max-width: calc(100vw - 52px); }
 
 /* Floating desktop windows (created by js/windows.js) */
 .window--floating {
   position: absolute;
-  min-width: 240px;
-  max-width: 360px;
+  min-width: min(240px, calc(100vw - 16px));
+  max-width: min(360px, calc(100vw - 16px));
 }
-.window--floating .title-bar { cursor: grab; }
+.window--floating .title-bar { cursor: grab; touch-action: none; }
 .window--floating .title-bar:active { cursor: grabbing; }
 
 /* ============================================================
@@ -359,7 +365,19 @@ body {
 }
 .app-music-controls button:hover { color: var(--purple); }
 
-.app-gallery { font-size: 2rem; letter-spacing: 0.4rem; line-height: 1.6; max-width: 220px; }
+.app-gallery { display: grid; gap: 0.5rem; width: 280px; margin: 0; }
+.gallery-photo {
+  display: block;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid rgba(187, 154, 247, 0.35);
+}
+.gallery-caption {
+  font-family: var(--font-terminal);
+  font-size: 1.05rem;
+  color: var(--cyan);
+  text-align: center;
+}
 
 /* Magic Hamster Ball (fortune) */
 .app-fortune {
@@ -521,6 +539,7 @@ body {
   padding: 8px;
   background: #2a2440;
   border-radius: 8px;
+  touch-action: none; /* swipes move tiles instead of scrolling */
 }
 .g2048-cell {
   min-width: 0;

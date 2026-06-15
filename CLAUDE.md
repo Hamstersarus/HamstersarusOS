@@ -36,7 +36,7 @@ These are fixed for the whole project. Do not break them without updating this f
 - **No build step and no npm.** Nothing that needs compiling, bundling, or installing. The site must run by opening `index.html` directly from disk.
 - **Vanilla JS only** — browser-native APIs (DOM, `localStorage`, `setInterval`, etc.). No external JS libraries.
 - **No backend.** Everything runs in the browser. Persistence (if any) uses `localStorage`.
-- **Mobile is secondary.** Target desktop browsers first; don't block on responsive layout.
+- **Works on touch/mobile too.** Desktop-first, but the OS must be usable on phones: tap to open apps, touch-drag windows, windows that fit the screen, and swipe controls for 2048. See [Mobile support](#mobile-support).
 
 ---
 
@@ -115,7 +115,7 @@ Each app is self-contained and opens inside a standard window.
 | Music | `music` | ✅ | Shared `musicPlayer` singleton; auto-plays on enter, keeps playing when closed (`js/apps/music.js`) |
 | 2048 | `game` | ✅ | Playable purple 2048, arrow/WASD (`js/apps/game2048.js`) |
 | Message | `notes` | ✅ | Message form → Cloudflare Worker → Discord; frontend rate limit (`js/apps/notes.js`, `worker/message-proxy.js`) |
-| Gallery | `gallery` | placeholder | Emoji grid — swap for real images |
+| Gallery | `gallery` | ✅ | Framed photo + caption (image lives in `assets/images/`) |
 | Magic Hamster Ball | `fortune` | ✅ | Hamster-pun Magic 8-Ball — replaced Trash (`js/apps/fortune.js`) |
 
 ### Plan — Magic Hamster Ball (replaces Trash)
@@ -147,6 +147,34 @@ Maybe: "Ask again after my nap. 😴" · "The wheel is still spinning…" · "Re
 No: "Not a chance, you absolute walnut." · "No. *aggressively stuffs cheeks*" · "The seeds say no." · "My whiskers sense doubt." · "Don't count your seeds before they sprout."
 
 **Style notes.** Purple radial-gradient ball + neon glow (reuse `--purple`/glow pattern), VT323 for the answer text, wobble via `@keyframes`. Keep within the floating-window sizing (it's decorative — fine to be small).
+
+---
+
+## Mobile support
+
+**Status: ✅ built.** Makes the OS usable on touch phones without redesigning it — same desktop metaphor, just touch-friendly. Existing groundwork: window dragging already uses **pointer events** (touch-capable) and `index.html` has the `viewport` meta tag.
+
+**1. Tap to open apps** — `js/os.js`
+- Desktop keeps **double-click** to open (single click still selects).
+- On touch devices (`window.matchMedia("(pointer: coarse)").matches`), a **single tap** opens the app — double-tap is awkward on phones.
+- Keep the existing select-on-click behaviour for fine pointers.
+
+**2. Touch dragging** — `css/style.css`
+- Add `touch-action: none` to `.window--floating .title-bar` so dragging a window doesn't scroll/zoom the page. (The pointer-event drag logic itself already works with touch.)
+
+**3. Responsive windows** — `css/style.css`
+- Cap floating windows to the screen: `.window--floating { max-width: min(360px, calc(100vw - 16px)); }`.
+- Make app content shrink instead of overflow: where a fixed width could exceed the screen, use `width: min(<X>px, 100%)` (e.g. `.app-projects`, `.app-skills`, `.g2048`, `.app-fortune`, `.app-message`).
+
+**4. Swipe controls for 2048** — `js/apps/game2048.js`
+- Add `touchstart`/`touchend` on the board: compare deltas, dominant axis → `left/right` or `up/down`, with a small threshold (~24px); call the existing `move(dir)`.
+- Add `touch-action: none` to `.g2048-board` so swipes don't scroll. Keyboard controls stay for desktop.
+
+**5. Polish** — `css/style.css`
+- `-webkit-tap-highlight-color: transparent` so taps don't flash blue.
+- Comfortable tap targets (the × close button especially).
+
+**Files:** `js/os.js`, `js/apps/game2048.js`, `css/style.css`. No HTML changes needed (viewport already set). Test by narrowing the browser window and with the browser's device/responsive mode.
 
 ---
 
