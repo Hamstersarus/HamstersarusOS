@@ -126,7 +126,7 @@ body {
 .window--floating {
   position: absolute;
   min-width: min(240px, calc(100vw - 16px));
-  max-width: min(360px, calc(100vw - 16px));
+  max-width: min(480px, calc(100vw - 16px));
 }
 .window--floating .title-bar { cursor: grab; touch-action: none; }
 .window--floating .title-bar:active { cursor: grabbing; }
@@ -365,7 +365,8 @@ body {
 }
 .app-music-controls button:hover { color: var(--purple); }
 
-.app-gallery { display: grid; gap: 0.5rem; width: 280px; margin: 0; }
+.app-gallery { display: grid; gap: 0.9rem; width: 440px; max-height: 72vh; overflow-y: auto; }
+.gallery-item { display: grid; gap: 0.4rem; margin: 0; }
 .gallery-photo {
   display: block;
   width: 100%;

@@ -1,4 +1,4 @@
-// HamstersarusOS — window manager (Part 3)
+// HamstersarusOS - window manager (Part 3)
 // Reusable draggable / focusable / closable windows. Every app reuses this.
 
 const desktopEl = document.getElementById("desktop");
@@ -111,7 +111,7 @@ function makeDraggable(win, handle) {
 // Simple placeholder apps so the windows have something to show.
 // Parts 4 & 5 replace these with the real "first app" and "advanced app".
 const APPS = {
-  // Part 4 — first real app. Personalize the text below with your own info.
+  // Part 4 - first real app.
   about: {
     title: "~/about-me",
     content:
@@ -124,7 +124,7 @@ const APPS = {
           "</div>" +
         "</div>" +
         '<p class="app-about-bio">10th grader at Langley High School taking AP ' +
-        "Computer Science A. i love building things — from spacecraft sensor " +
+        "Computer Science A. i love building things. from spacecraft sensor " +
         "drivers to little operating systems like this one.</p>" +
         '<div class="app-about-cols">' +
           "<div><h3>likes</h3><ul>" +
@@ -138,7 +138,7 @@ const APPS = {
       "</div>",
   },
 
-  // ---- Portfolio apps (placeholder content — swap in your real info) ----
+  // ---- Portfolio apps ----
   projects: {
     title: "~/projects",
     content:
@@ -154,7 +154,7 @@ const APPS = {
         "</article>" +
         '<article class="proj-card">' +
           "<h3>SENTINEL 👁️</h3>" +
-          "<p>a terminal narrative game set in a surveillance state — you're a data " +
+          "<p>a terminal narrative game set in a surveillance state. you're a data " +
           "analyst forced to choose between enforcing the system and protecting people. " +
           "Inspired by Papers, Please.</p>" +
           '<p class="proj-tech">Python</p>' +
@@ -162,14 +162,14 @@ const APPS = {
         "</article>" +
         '<article class="proj-card">' +
           "<h3>Fight ⚔️</h3>" +
-          "<p>a turn-based fighting game on a 10×10 arena — 10 characters with special " +
+          "<p>a turn-based fighting game on a 10×10 arena. 10 characters with special " +
           "abilities, shields, and a matchmaking system. My final AP CS A project.</p>" +
           '<p class="proj-tech">Java</p>' +
           '<div class="proj-links"><a href="https://github.com/Hamstersarus/FightGame" target="_blank" rel="noopener noreferrer">code ▸</a></div>' +
         "</article>" +
         '<article class="proj-card">' +
           "<h3>2048 🔢</h3>" +
-          "<p>a terminal version of the 2048 puzzle game — slide and merge tiles to reach 2048.</p>" +
+          "<p>a terminal version of the 2048 puzzle game. slide and merge tiles to reach 2048.</p>" +
           '<p class="proj-tech">Java</p>' +
           '<div class="proj-links"><a href="https://github.com/Hamstersarus/2048" target="_blank" rel="noopener noreferrer">code ▸</a></div>' +
         "</article>" +
@@ -191,20 +191,20 @@ const APPS = {
     content:
       '<div class="app-resume">' +
         "<section><h3>education</h3>" +
-          "<p>Langley High School — 10th grade.<br>" +
+          "<p>Langley High School - 10th grade.<br>" +
           "AP Computer Science A (2025–26): Java, OOP, data structures, algorithms.</p></section>" +
         "<section><h3>experience</h3>" +
-          "<p><b>Software Engineering Intern</b> — New Ascent (May–Aug 2025)<br>" +
+          "<p><b>Software Engineering Intern</b> - New Ascent (May–Aug 2025)<br>" +
           "Worked on the ChipSat educational spacecraft: CircuitPython on a Raspberry Pi " +
           "RP2040, wrote a driver for the MS5607 pressure sensor (I2C), and a board-target " +
           "config (I2C addresses, SPI pins). Joined code reviews and pushed to the team GitLab.</p>" +
-          "<p><b>Tennis Camp Counselor</b> — JCC (2024–2025)<br>" +
+          "<p><b>Tennis Camp Counselor</b> - JCC (2024–2025)<br>" +
           "Helped lead groups of kids ages 7–13.</p>" +
         "</section>" +
         "<section><h3>languages &amp; awards</h3><ul>" +
-          "<li>Russian — advanced (reading, writing, speaking)</li>" +
-          "<li>🥇 Gold, Russian Olympiad — George Mason, 2025</li>" +
-          "<li>🥈 Silver, Russian Essay Contest — Langley, 2024</li>" +
+          "<li>Russian - advanced (reading, writing, speaking)</li>" +
+          "<li>🥇 Gold, Russian Olympiad - George Mason, 2025</li>" +
+          "<li>🥈 Silver, Russian Essay Contest - Langley, 2024</li>" +
         "</ul></section>" +
       "</div>",
   },
@@ -212,8 +212,8 @@ const APPS = {
     title: "~/contact",
     content:
       '<div class="app-contact">' +
-        '<a class="contact-link" href="https://github.com/Hamstersarus" target="_blank" rel="noopener noreferrer">🐙 GitHub — @Hamstersarus</a>' +
-        '<a class="contact-link" href="https://www.linkedin.com/in/ayla-vaynerman-216341373/" target="_blank" rel="noopener noreferrer">💼 LinkedIn — Ayla Vaynerman</a>' +
+        '<a class="contact-link" href="https://github.com/Hamstersarus" target="_blank" rel="noopener noreferrer">🐙 GitHub - @Hamstersarus</a>' +
+        '<a class="contact-link" href="https://www.linkedin.com/in/ayla-vaynerman-216341373/" target="_blank" rel="noopener noreferrer">💼 LinkedIn - Ayla Vaynerman</a>' +
         '<a class="contact-link" href="mailto:ayla.vaynerman@gmail.com">✉️ ayla.vaynerman@gmail.com</a>' +
       "</div>",
   },
@@ -222,7 +222,7 @@ const APPS = {
     title: "~/message",
     content: buildNotes, // a "message me" box that posts to Discord (js/apps/notes.js)
   },
-  // advanced apps — content is a builder function (see js/apps/)
+  // advanced apps - content is a builder function (see js/apps/)
   music: {
     title: "~/music",
     content: buildMusicPlayer,
@@ -234,11 +234,18 @@ const APPS = {
   gallery: {
     title: "~/gallery",
     content:
-      '<figure class="app-gallery">' +
-        '<img class="gallery-photo" src="assets/images/chipsat.jpg" ' +
-        'alt="A chipsat I worked on for the company New Ascent" />' +
-        '<figcaption class="gallery-caption">A chipsat I worked on for the company New Ascent</figcaption>' +
-      "</figure>",
+      '<div class="app-gallery">' +
+        '<figure class="gallery-item">' +
+          '<img class="gallery-photo" src="assets/images/chipsat.jpg" ' +
+          'alt="A chipsat I worked on for the company New Ascent" />' +
+          '<figcaption class="gallery-caption">A chipsat I worked on for the company New Ascent</figcaption>' +
+        "</figure>" +
+        '<figure class="gallery-item">' +
+          '<img class="gallery-photo" src="assets/images/micropad.png" ' +
+          'alt="a compact, USB-HID micropad intended for programmable shortcut input" />' +
+          '<figcaption class="gallery-caption">a compact, USB-HID micropad intended for programmable shortcut input</figcaption>' +
+        "</figure>" +
+      "</div>",
   },
   fortune: {
     title: "~/hamster-ball",
