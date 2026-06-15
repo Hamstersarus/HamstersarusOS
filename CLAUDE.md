@@ -113,7 +113,7 @@ Each app is self-contained and opens inside a standard window.
 | Resume | `resume` | ✅ | Education / experience / awards — **professional info only** |
 | Contact | `contact` | ✅ | GitHub + email links (no address/phone) |
 | Music | `music` | ✅ | Shared `musicPlayer` singleton; auto-plays on enter, keeps playing when closed (`js/apps/music.js`) |
-| 2048 | `game` | ✅ | Playable purple 2048, arrow/WASD (`js/apps/game2048.js`) |
+| 2048 | `game` | ✅ | Playable purple 2048 (keyboard/WASD + swipe, R restarts); structured after the Java version — `Grid` + `GamePanel` classes (`js/apps/game2048.js`) |
 | Message | `notes` | ✅ | Message form → Cloudflare Worker → Discord; frontend rate limit (`js/apps/notes.js`, `worker/message-proxy.js`) |
 | Gallery | `gallery` | ✅ | Framed photo + caption (image lives in `assets/images/`) |
 | Magic Hamster Ball | `fortune` | ✅ | Hamster-pun Magic 8-Ball — replaced Trash (`js/apps/fortune.js`) |
