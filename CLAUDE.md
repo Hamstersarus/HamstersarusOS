@@ -90,7 +90,9 @@ The window system from Part 3 is shared infrastructure — every app from Part 4
 - **Open** — `createWindow({ id, title, content })` builds the element, cascades + clamps it into view, appends it to the desktop, and returns it. `content` may be an HTML string, a DOM node, or a builder function. `id` de-dupes: opening an already-open app just focuses it.
 - **Drag** — **pointer events** on the title bar: `pointerdown` (with `setPointerCapture`) starts the drag, `pointermove` updates `left`/`top` (clamped on-screen), `pointerup` ends it. Drag only by the title bar, never the whole window.
 - **Focus** — `pointerdown` anywhere on a window raises it above the others (bump `z-index`).
-- **Close** — the × button removes the element from the DOM (and clears it from the open-window map).
+- **Minimize** — the ─ button hides the window (`.minimized`) but keeps its taskbar button; opening the app again (or clicking its taskbar button) restores it.
+- **Close** — the × button removes the element from the DOM (and clears it from the open-window map + taskbar).
+- **Taskbar** — the `#taskbar` bottom bar shows one button per open window (`addTaskbarItem`); clicking it minimizes/restores, and the focused window's button is highlighted (`setActiveTab`).
 
 Keep this generic: apps pass in their content and never touch dragging/z-index themselves.
 

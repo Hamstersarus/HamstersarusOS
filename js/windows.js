@@ -2,6 +2,7 @@
 // Reusable draggable / focusable / closable windows. Every app reuses this.
 
 const desktopEl = document.getElementById("desktop");
+const taskbarEl = document.getElementById("taskbar");
 
 let topZ = 10;            // highest z-index handed out so far
 let cascade = 0;          // offset so new windows don't land exactly on top
@@ -11,6 +12,40 @@ const openWindows = {};   // appId -> window element (so we don't open duplicate
 function focusWindow(win) {
   topZ += 1;
   win.style.zIndex = topZ;
+  setActiveTab(win);
+}
+
+// --- Taskbar + minimize ---------------------------------------------
+// Highlight the focused window's taskbar button (no-op before any exist).
+function setActiveTab(win) {
+  if (!taskbarEl) return;
+  taskbarEl.querySelectorAll(".taskbar-item").forEach((t) => t.classList.remove("active"));
+  if (win._tab && !win.classList.contains("minimized")) win._tab.classList.add("active");
+}
+
+// Hide a window (its taskbar button stays).
+function minimizeWindow(win) {
+  win.classList.add("minimized");
+  if (win._tab) win._tab.classList.remove("active");
+}
+
+// Show a hidden window and bring it to the front.
+function restoreWindow(win) {
+  win.classList.remove("minimized");
+  focusWindow(win);
+}
+
+// Add a taskbar button for a window; clicking it minimizes / restores.
+function addTaskbarItem(win, title) {
+  const tab = document.createElement("button");
+  tab.className = "taskbar-item";
+  tab.textContent = title.replace(/^~\//, ""); // drop the "~/" prefix
+  tab.addEventListener("click", () => {
+    if (win.classList.contains("minimized")) restoreWindow(win);
+    else minimizeWindow(win);
+  });
+  taskbarEl.appendChild(tab);
+  win._tab = tab;
 }
 
 // Nudge a window so it sits fully on-screen (below the top bar).
@@ -28,9 +63,9 @@ function clampIntoView(win) {
 // Build and show a window. Returns the window element.
 // content can be an HTML string or a DOM node.
 function createWindow({ id, title, content }) {
-  // already open? just focus the existing one.
+  // already open? restore (if minimized) and focus it.
   if (id && openWindows[id]) {
-    focusWindow(openWindows[id]);
+    restoreWindow(openWindows[id]);
     return openWindows[id];
   }
 
@@ -42,6 +77,7 @@ function createWindow({ id, title, content }) {
   bar.innerHTML =
     '<span class="title-bar-dots"><i></i><i></i><i></i></span>' +
     '<span class="title-bar-text"></span>' +
+    '<button class="title-bar-min" title="minimize">─</button>' +
     '<button class="title-bar-close" title="close">×</button>';
   bar.querySelector(".title-bar-text").textContent = title;
 
@@ -59,15 +95,23 @@ function createWindow({ id, title, content }) {
 
   desktopEl.appendChild(win);
   clampIntoView(win); // pull it fully on-screen now that we know its size
+  addTaskbarItem(win, title); // taskbar button (before focus so it can highlight)
   focusWindow(win);
   if (id) openWindows[id] = win;
 
   // clicking anywhere on the window raises it
   win.addEventListener("pointerdown", () => focusWindow(win));
 
-  // close button removes it
+  // minimize button hides the window (keeps its taskbar button)
+  bar.querySelector(".title-bar-min").addEventListener("click", (e) => {
+    e.stopPropagation();
+    minimizeWindow(win);
+  });
+
+  // close button removes the window and its taskbar button
   bar.querySelector(".title-bar-close").addEventListener("click", () => {
     win.remove();
+    if (win._tab) win._tab.remove();
     if (id) delete openWindows[id];
   });
 
@@ -81,7 +125,7 @@ function makeDraggable(win, handle) {
   let dragging = false;
 
   handle.addEventListener("pointerdown", (e) => {
-    if (e.target.closest(".title-bar-close")) return; // don't drag from the × button
+    if (e.target.closest(".title-bar-close, .title-bar-min")) return; // not from the buttons
     dragging = true;
     startX = e.clientX;
     startY = e.clientY;

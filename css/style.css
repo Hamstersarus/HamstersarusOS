@@ -103,8 +103,18 @@ body {
 .title-bar { user-select: none; }
 .title-bar-text { letter-spacing: 0.5px; }
 
-.title-bar-close {
+.title-bar-min {
   margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1;
+  padding: 0 0.3rem;
+  cursor: pointer;
+}
+.title-bar-min:hover { color: var(--cyan); }
+.title-bar-close {
   background: none;
   border: none;
   color: var(--muted);
@@ -115,6 +125,7 @@ body {
 }
 .title-bar-close:hover { color: var(--pink); }
 @media (pointer: coarse) {
+  .title-bar-min { font-size: 1.2rem; padding: 0 0.5rem; }
   .title-bar-close { font-size: 1.4rem; padding: 0 0.55rem; }
 }
 
@@ -130,6 +141,42 @@ body {
 }
 .window--floating .title-bar { cursor: grab; touch-action: none; }
 .window--floating .title-bar:active { cursor: grabbing; }
+.window.minimized { display: none; }
+
+/* Taskbar — a button per open window, along the bottom */
+.taskbar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
+  background: rgba(26, 27, 38, 0.82);
+  backdrop-filter: blur(6px);
+  border-top: 1px solid rgba(187, 154, 247, 0.4);
+  overflow-x: auto;
+  z-index: 100000;
+}
+.taskbar-item {
+  flex: 0 0 auto;
+  max-width: 150px;
+  padding: 0.3rem 0.7rem;
+  background: var(--win-bg-2);
+  color: var(--ink);
+  border: 1px solid rgba(187, 154, 247, 0.3);
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.taskbar-item:hover { filter: brightness(1.12); }
+.taskbar-item.active { border-color: var(--purple); color: var(--purple); }
 
 /* ============================================================
    Welcome screen
@@ -239,7 +286,7 @@ body {
   list-style: none;
   position: absolute;
   top: calc(var(--top-bar-h) + 1rem);
-  bottom: 1rem;
+  bottom: 46px; /* clear the taskbar */
   left: 1rem;
   display: flex;
   flex-direction: column;

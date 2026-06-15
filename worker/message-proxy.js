@@ -1,33 +1,53 @@
 // HamstersarusOS — Cloudflare Worker that proxies messages to Discord.
 //
-// WHY: a static site can't hold a secret (everything ships to the browser).
-// This Worker runs on Cloudflare's servers and keeps the real Discord webhook
-// in a secret env var (DISCORD_WEBHOOK_URL), so it's never exposed publicly.
-// The website posts { name, message } here; this forwards it to Discord.
+// WHY: a static site can't keep a secret (everything ships to the browser).
+// This Worker runs on Cloudflare's servers, holds the real Discord webhook in a
+// secret env var (DISCORD_WEBHOOK_URL), and rate-limits by IP so the public
+// endpoint can't be spammed. The website's own rate limit is just for UX and is
+// trivially bypassed — THIS is the real enforcement.
 //
-// DEPLOY (one time):
-//   1. dash.cloudflare.com -> Workers & Pages -> Create -> Create Worker
-//   2. name it (e.g. hamstersarus-message) -> Deploy
-//   3. Edit code -> paste this whole file -> Deploy
-//   4. Settings -> Variables and Secrets -> add a SECRET named
-//      DISCORD_WEBHOOK_URL  =  your (regenerated) Discord webhook URL -> Deploy
-//   5. copy the Worker URL (https://<name>.<subdomain>.workers.dev) and send it
-//      to me so I can point the website at it.
+// SETUP (one time, in the Cloudflare dashboard):
+//   1. Secret — Settings -> Variables and Secrets -> add a SECRET named
+//        DISCORD_WEBHOOK_URL = your Discord webhook URL
+//   2. Rate-limit store — create a KV namespace (Storage & Databases -> KV ->
+//      Create), then bind it to this Worker (Settings -> Bindings -> add KV
+//      namespace) with the variable name  RATE_LIMIT.
+//   (If RATE_LIMIT isn't bound yet, the Worker still forwards — just without
+//   rate limiting — so nothing breaks while you set it up.)
+
+const MAX_PER_WINDOW = 5; // max messages from one IP...
+const WINDOW_SEC = 60; // ...per this many seconds (KV TTL minimum is 60)
 
 export default {
   async fetch(request, env) {
     const cors = {
-      "Access-Control-Allow-Origin": "*", // any site may POST a message
+      "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "POST, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type",
     };
 
-    // CORS preflight
-    if (request.method === "OPTIONS") {
-      return new Response(null, { headers: cors });
-    }
+    if (request.method === "OPTIONS") return new Response(null, { headers: cors });
     if (request.method !== "POST") {
       return new Response("method not allowed", { status: 405, headers: cors });
+    }
+
+    // --- per-IP rate limit (needs a KV binding named RATE_LIMIT) ---
+    if (env.RATE_LIMIT) {
+      const ip = request.headers.get("cf-connecting-ip") || "unknown";
+      const key = "rl:" + ip;
+      const now = Date.now();
+      let hits;
+      try {
+        hits = JSON.parse((await env.RATE_LIMIT.get(key)) || "[]");
+      } catch (e) {
+        hits = [];
+      }
+      hits = hits.filter((t) => now - t < WINDOW_SEC * 1000); // drop old hits
+      if (hits.length >= MAX_PER_WINDOW) {
+        return new Response("too many messages — slow down", { status: 429, headers: cors });
+      }
+      hits.push(now);
+      await env.RATE_LIMIT.put(key, JSON.stringify(hits), { expirationTtl: WINDOW_SEC });
     }
 
     // parse the incoming { name, message }
