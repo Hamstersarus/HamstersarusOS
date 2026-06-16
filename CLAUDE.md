@@ -69,7 +69,7 @@ Keep it flat: one CSS file, simple apps inline in `windows.js`, and a file in `j
 
 All five parts are complete. Kept here as a record of what was built.
 
-- [x] **Part 1 — Welcome screen.** Pixel logo + a neofetch-style terminal card; the "enter" button reveals the desktop.
+- [x] **Part 1 — Welcome screen.** Pixel logo + a neofetch-style terminal card; "enter" plays a short terminal-style **boot sequence** (`#boot` overlay, `runBoot()` in `os.js`) then fades into the desktop.
 - [x] **Part 2 — Desktop & top bar with clock.** Graph-paper desktop, top bar, a live clock (`setInterval`, every second), and selectable desktop icons.
 - [x] **Part 3 — Draggable, closable, openable windows.** `createWindow()` in `js/windows.js` — drag by the title bar, click-to-front, close button, plus clamp-into-view. See [Window System](#window-system).
 - [x] **Part 4 — First app.** About Me (avatar, bio, likes/dislikes).

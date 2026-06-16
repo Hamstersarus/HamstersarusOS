@@ -44,6 +44,8 @@ I really like customizing my desktop so I have spent a lot of time researching. 
 
 ## 💬 Message Me
 
+<u>As of right now (June 16 2026) this feature DOES NOT WORK</u>
+
 While drafting ideas of different things I could make, I decided it would be interesting to make an app that would allow the user to send messages directly towards me. My first idea was to make a Gmail, but I decided to link a Discord webhook through Cloudflare.
 
 ## 🛠️ Built with

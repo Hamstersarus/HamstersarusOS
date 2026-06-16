@@ -8,12 +8,51 @@ const enterBtn = document.getElementById("enter-btn");
 
 enterBtn.addEventListener("click", () => {
   welcome.classList.add("hidden");
-  desktop.classList.remove("hidden");
-  // start the music right away (this click is the user gesture browsers
-  // require to allow audio), and announce it with a toast
+  // start the music during the click (browsers only allow audio from a gesture)
   musicPlayer.play();
-  showNotification("🎵 now playing: " + musicPlayer.currentTitle);
+  // play a short boot sequence, then fade into the desktop
+  runBoot(() => {
+    desktop.classList.remove("hidden");
+    boot.classList.add("boot--out");
+    setTimeout(() => {
+      boot.classList.add("hidden");
+      boot.classList.remove("boot--out");
+      showNotification("🎵 now playing: " + musicPlayer.currentTitle);
+    }, 450);
+  });
 });
+
+// --- Boot sequence: terminal-style log + progress bar ---
+const boot = document.getElementById("boot");
+const bootLog = document.getElementById("boot-log");
+const bootBar = boot.querySelector(".boot-progress i");
+
+const BOOT_LINES = [
+  "HamstersarusOS v1.0",
+  "loading kernel................ ok",
+  "mounting /home/hamstersarus... ok",
+  "starting window manager....... ok",
+  "waking the hamster............ 🐹",
+  "welcome.",
+];
+
+function runBoot(onDone) {
+  boot.classList.remove("hidden");
+  bootLog.textContent = "";
+  bootBar.style.width = "0";
+  let i = 0;
+  const next = () => {
+    if (i < BOOT_LINES.length) {
+      bootLog.textContent += BOOT_LINES[i] + "\n";
+      i += 1;
+      bootBar.style.width = Math.round((i / BOOT_LINES.length) * 100) + "%";
+      setTimeout(next, 300);
+    } else {
+      setTimeout(onDone, 450);
+    }
+  };
+  next();
+}
 
 // Small desktop toast that slides in, then fades out.
 function showNotification(text) {

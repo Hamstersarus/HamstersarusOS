@@ -55,6 +55,42 @@ body {
 
 .hidden { display: none !important; }
 
+/* Boot sequence overlay (shown briefly after "enter") */
+.boot {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: var(--win-bg);
+  display: grid;
+  place-content: center;
+  gap: 1.2rem;
+  padding: 2rem;
+  transition: opacity 0.4s ease;
+}
+.boot--out { opacity: 0; }
+.boot-log {
+  margin: 0;
+  font-family: var(--font-terminal);
+  font-size: 1.3rem;
+  color: var(--green);
+  white-space: pre-wrap;
+  min-height: 9em;
+}
+.boot-progress {
+  width: min(360px, 80vw);
+  height: 8px;
+  background: rgba(187, 154, 247, 0.18);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.boot-progress i {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--purple);
+  transition: width 0.3s linear;
+}
+
 /* --- shared: graph-paper wallpaper --- */
 .welcome,
 .desktop {
