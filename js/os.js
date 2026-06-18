@@ -100,4 +100,13 @@ desktop.addEventListener("click", (e) => {
   if (e.target === desktop) icons.forEach((i) => i.classList.remove("selected"));
 });
 
+// --- Notify the owner once per session when the site is opened ---
+if (!sessionStorage.getItem("hs_visited")) {
+  sessionStorage.setItem("hs_visited", "1");
+  fetch("https://hamstersarus-message.ayla-vaynerman.workers.dev/visit", {
+    method: "POST",
+    keepalive: true,
+  }).catch(() => {}); // best-effort; never block the page on it
+}
+
 // --- Part 3+: window system goes in js/windows.js (split out when it grows) ---

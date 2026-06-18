@@ -17,6 +17,41 @@
 
 const MAX_PER_WINDOW = 5; // max messages from one IP...
 const WINDOW_SEC = 60; // ...per this many seconds (KV TTL minimum is 60)
+const MAX_VISITS_PER_MIN = 20; // cap visit pings so they can't be used to flood you
+
+// POST /visit -> a quiet "someone opened the site" ping to Discord.
+// Globally rate-limited (a flood can't dump unlimited pings into your channel).
+async function handleVisit(request, env, cors) {
+  if (request.method !== "POST") return new Response("ok", { status: 200, headers: cors });
+  // Only log if a SEPARATE visitor webhook is configured, so visit logs land in
+  // their own channel (not your messages channel). No @mentions, so it won't ping.
+  if (!env.VISIT_WEBHOOK_URL) return new Response("ok", { status: 200, headers: cors });
+
+  if (env.RATE_LIMIT) {
+    const now = Date.now();
+    let hits;
+    try {
+      hits = JSON.parse((await env.RATE_LIMIT.get("visit-global")) || "[]");
+    } catch (e) {
+      hits = [];
+    }
+    hits = hits.filter((t) => now - t < 60000);
+    if (hits.length >= MAX_VISITS_PER_MIN) return new Response("ok", { status: 200, headers: cors });
+    hits.push(now);
+    await env.RATE_LIMIT.put("visit-global", JSON.stringify(hits), { expirationTtl: 60 });
+  }
+
+  const country = (request.cf && request.cf.country) || request.headers.get("cf-ipcountry") || "??";
+  await fetch(env.VISIT_WEBHOOK_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      username: "visitor log",
+      content: "🟢 someone joined (from " + country + ")",
+    }),
+  });
+  return new Response("ok", { status: 200, headers: cors });
+}
 
 export default {
   async fetch(request, env) {
@@ -25,6 +60,9 @@ export default {
       "Access-Control-Allow-Methods": "POST, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type",
     };
+
+    // visit pings use a separate path
+    if (new URL(request.url).pathname === "/visit") return handleVisit(request, env, cors);
 
     if (request.method === "OPTIONS") return new Response(null, { headers: cors });
     if (request.method !== "POST") {
