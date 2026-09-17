@@ -167,8 +167,8 @@ const APPS = {
             '<p class="app-about-tag">student developer · she/her</p>' +
           "</div>" +
         "</div>" +
-        '<p class="app-about-bio">11th grader at Langley High School taking AP ' +
-        "Computer Science A. i love building things. from spacecraft sensor " +
+        '<p class="app-about-bio">11th grader at Langley High School.' +
+        "i love building things. from spacecraft sensor " +
         "drivers to little operating systems like this one.</p>" +
         '<div class="app-about-cols">' +
           "<div><h3>likes</h3><ul>" +
