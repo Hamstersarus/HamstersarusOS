@@ -217,6 +217,30 @@ const APPS = {
           '<p class="proj-tech">Java</p>' +
           '<div class="proj-links"><a href="https://github.com/Hamstersarus/2048" target="_blank" rel="noopener noreferrer">code ▸</a></div>' +
         "</article>" +
+        '<article class="proj-card">' +
+          "<h3>Ultron Desktop Pet 🤖</h3>" +
+          "<p>a tiny pixel-art Ultron that flies around your desktop and answers your " +
+          "questions in character. runs on Windows, Mac, and Linux.</p>" +
+          '<p class="proj-tech">JavaScript</p>' +
+          '<div class="proj-links">' +
+            '<a href="https://hamstersarus.github.io/Ultron_Desktop_Pet/" target="_blank" rel="noopener noreferrer">live ▸</a>' +
+            '<a href="https://github.com/Hamstersarus/Ultron_Desktop_Pet" target="_blank" rel="noopener noreferrer">code ▸</a>' +
+          "</div>" +
+        "</article>" +
+        '<article class="proj-card">' +
+          "<h3>Hack Club Micropad ⌨️</h3>" +
+          "<p>a 6-key USB macropad with an OLED screen and rotary encoder. designed from " +
+          "scratch in KiCad, built on a XIAO RP2350.</p>" +
+          '<p class="proj-tech">KiCad · CircuitPython</p>' +
+          '<div class="proj-links"><a href="https://github.com/Hamstersarus/HackClubMicropad" target="_blank" rel="noopener noreferrer">code ▸</a></div>' +
+        "</article>" +
+        '<article class="proj-card">' +
+          "<h3>ESP32 Board for Velxio 🔌</h3>" +
+          "<p>added the Waveshare ESP32-S3-Touch-LCD-2.8 to the Velxio browser-based ESP32 " +
+          "simulator, plus a reusable guide for adding any ESP32 board.</p>" +
+          '<p class="proj-tech">Python · ESP32</p>' +
+          '<div class="proj-links"><a href="https://github.com/Hamstersarus/Adding-an-esp32-Board-to-Velxio" target="_blank" rel="noopener noreferrer">code ▸</a></div>' +
+        "</article>" +
       "</div>",
   },
   skills: {
